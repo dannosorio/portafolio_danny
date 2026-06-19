@@ -19,7 +19,7 @@ export interface PersonalInfo {
 }
 
 export const personal: PersonalInfo = {
-  name: "Danny Apellido",
+  name: "Danny Osorio",
   shortName: "Danny",
   role: "Full-Stack Developer",
   taglines: [
