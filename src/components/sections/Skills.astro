@@ -1,0 +1,68 @@
+---
+import Section from "../ui/Section.astro";
+import Chip from "../ui/Chip.astro";
+import { skillGroups, marqueeStack } from "../../data/skills";
+
+const dots: Record<string, string> = {
+  cyan: "bg-[var(--color-neon-cyan)] shadow-[0_0_10px_var(--color-neon-cyan)]",
+  pink: "bg-[var(--color-neon-pink)] shadow-[0_0_10px_var(--color-neon-pink)]",
+  violet:
+    "bg-[var(--color-neon-violet)] shadow-[0_0_10px_var(--color-neon-violet)]",
+  lime: "bg-[var(--color-neon-lime)] shadow-[0_0_10px_var(--color-neon-lime)]",
+};
+---
+
+<Section
+  id="skills"
+  eyebrow="Stack"
+  title={`Las herramientas que <span class='neon-gradient'>amo usar</span>`}
+  description="Una selección curada de tecnologías que uso día a día para construir productos robustos y mantenibles."
+>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    {
+      skillGroups.map((group) => (
+        <article class="ring-card p-6 flex flex-col gap-4 reveal">
+          <div class="flex items-center gap-2">
+            <span
+              class={`h-2 w-2 rounded-full ${dots[group.accent]}`}
+              aria-hidden="true"
+            />
+            <h3 class="font-[var(--font-display)] text-lg font-semibold text-white">
+              {group.title}
+            </h3>
+          </div>
+          <ul class="flex flex-wrap gap-2">
+            {group.items.map((item) => (
+              <li>
+                <Chip label={item} accent={group.accent} />
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))
+    }
+  </div>
+
+  <div
+    class="relative mt-14 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-elev)]/60 py-5"
+    aria-hidden="true"
+  >
+    <div class="flex w-max gap-10 animate-marquee">
+      {
+        [...marqueeStack, ...marqueeStack].map((item) => (
+          <span class="font-[var(--font-mono)] text-sm text-[var(--color-text-subtle)] hover:text-white transition-colors whitespace-nowrap">
+            {item}
+          </span>
+        ))
+      }
+    </div>
+    <div
+      class="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[var(--color-bg)] to-transparent"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[var(--color-bg)] to-transparent"
+    >
+    </div>
+  </div>
+</Section>

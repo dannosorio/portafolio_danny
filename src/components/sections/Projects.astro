@@ -1,0 +1,101 @@
+---
+import Section from "../ui/Section.astro";
+import Chip from "../ui/Chip.astro";
+import Icon from "../icons/Icon.astro";
+import { projects } from "../../data/projects";
+---
+
+<Section
+  id="projects"
+  eyebrow="Trabajos seleccionados"
+  title={`Proyectos que me <span class='neon-gradient'>enorgullecen</span>`}
+  description="Una muestra de productos, herramientas y experimentos en los que he trabajado recientemente."
+>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {
+      projects.map((p, idx) => (
+        <article
+          class={`ring-card group relative p-6 md:p-7 flex flex-col gap-5 reveal ${
+            p.highlight ? "md:col-span-2 lg:col-span-2" : ""
+          }`}
+        >
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex flex-col gap-1">
+              <span class="font-[var(--font-mono)] text-xs text-[var(--color-text-subtle)]">
+                {String(idx + 1).padStart(2, "0")} · {p.year}
+              </span>
+              <h3 class="font-[var(--font-display)] text-xl md:text-2xl font-semibold text-white group-hover:neon-text-cyan transition-all duration-300">
+                {p.title}
+              </h3>
+            </div>
+            {p.highlight && (
+              <span class="chip" style="--c: var(--color-neon-pink)">
+                <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-neon-pink)] shadow-[0_0_8px_var(--color-neon-pink)]" />
+                Destacado
+              </span>
+            )}
+          </div>
+
+          <p class="text-[var(--color-text-muted)] leading-relaxed">
+            {p.description}
+          </p>
+
+          <ul class="flex flex-wrap gap-2 mt-auto">
+            {p.tags.map((t) => (
+              <li>
+                <Chip label={t} />
+              </li>
+            ))}
+          </ul>
+
+          <div class="flex items-center gap-3 pt-2 border-t border-[var(--color-border)]">
+            {p.links.demo && (
+              <a
+                href={p.links.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-neon-cyan)] transition-colors"
+              >
+                <Icon name="website" size={14} />
+                Demo en vivo
+                <Icon name="arrow-up-right" size={12} />
+              </a>
+            )}
+            {p.links.repo && (
+              <a
+                href={p.links.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-neon-pink)] transition-colors"
+              >
+                <Icon name="github" size={14} />
+                Código
+                <Icon name="arrow-up-right" size={12} />
+              </a>
+            )}
+          </div>
+
+          {p.highlight && (
+            <div
+              class="pointer-events-none absolute -top-px right-12 h-px w-32 bg-gradient-to-r from-transparent via-[var(--color-neon-pink)] to-transparent opacity-70"
+              aria-hidden="true"
+            />
+          )}
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="mt-10 flex justify-center reveal">
+    <a
+      href="https://github.com/danny"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-neon btn-neon--ghost"
+    >
+      <Icon name="github" size={16} />
+      Ver más en GitHub
+      <Icon name="arrow-up-right" size={14} />
+    </a>
+  </div>
+</Section>

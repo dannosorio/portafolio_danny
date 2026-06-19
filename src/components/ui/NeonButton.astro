@@ -1,0 +1,50 @@
+---
+interface Props {
+  href?: string;
+  variant?: "cyan" | "pink" | "violet" | "ghost";
+  external?: boolean;
+  type?: "button" | "submit" | "reset";
+  class?: string;
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  variant = "cyan",
+  external = false,
+  type = "button",
+  class: className = "",
+  ariaLabel,
+} = Astro.props;
+
+const variantClass =
+  variant === "ghost"
+    ? "btn-neon btn-neon--ghost"
+    : variant === "pink"
+      ? "btn-neon btn-neon--pink"
+      : variant === "violet"
+        ? "btn-neon btn-neon--violet"
+        : "btn-neon";
+
+const classes = `${variantClass} ${className}`.trim();
+const rel = external ? "noopener noreferrer" : undefined;
+const target = external ? "_blank" : undefined;
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class={classes}
+      target={target}
+      rel={rel}
+      aria-label={ariaLabel}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes} aria-label={ariaLabel}>
+      <slot />
+    </button>
+  )
+}

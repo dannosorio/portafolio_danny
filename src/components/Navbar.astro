@@ -1,0 +1,148 @@
+---
+import { personal } from "../data/personal";
+import Icon from "./icons/Icon.astro";
+
+const navItems = [
+  { href: "#about", label: "Sobre mí" },
+  { href: "#skills", label: "Skills" },
+  { href: "#projects", label: "Proyectos" },
+  { href: "#experience", label: "Experiencia" },
+  { href: "#contact", label: "Contacto" },
+];
+---
+
+<header
+  id="site-header"
+  class="fixed top-0 inset-x-0 z-40 transition-all duration-300"
+  data-scrolled="false"
+>
+  <div class="mx-auto max-w-6xl px-6 lg:px-8 mt-4">
+    <nav
+      class="glass flex items-center justify-between gap-4 px-4 md:px-5 py-3 rounded-full"
+      aria-label="Principal"
+    >
+      <a
+        href="#top"
+        class="flex items-center gap-2 group"
+        aria-label="Inicio"
+      >
+        <span
+          class="relative inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-bg-elev)] border border-[var(--color-border-strong)] overflow-hidden"
+        >
+          <span
+            class="font-[var(--font-display)] text-sm font-bold neon-gradient-animated"
+            >D</span
+          >
+          <span
+            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.35),transparent_70%)]"
+          ></span>
+        </span>
+        <span
+          class="hidden sm:inline font-[var(--font-display)] font-semibold text-sm tracking-wide text-white"
+        >
+          {personal.shortName}<span
+            class="text-[var(--color-neon-pink)]">.</span
+          >dev
+        </span>
+      </a>
+
+      <ul class="hidden md:flex items-center gap-1">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="px-3 py-1.5 rounded-full text-sm text-[var(--color-text-muted)] hover:text-white transition-colors relative group"
+              >
+                {item.label}
+                <span class="absolute inset-x-3 -bottom-px h-px bg-gradient-to-r from-transparent via-[var(--color-neon-cyan)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="flex items-center gap-2">
+        <a
+          href={`mailto:${personal.email}`}
+          class="hidden sm:inline-flex btn-neon btn-neon--ghost !py-1.5 !px-3.5 !text-xs"
+        >
+          <Icon name="mail" size={14} />
+          Contáctame
+        </a>
+        <button
+          id="nav-toggle"
+          type="button"
+          class="md:hidden inline-flex items-center justify-center h-9 w-9 rounded-full border border-[var(--color-border-strong)] text-white"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Abrir menú"
+        >
+          <Icon name="menu" size={18} />
+        </button>
+      </div>
+    </nav>
+
+    <div
+      id="mobile-menu"
+      class="md:hidden hidden mt-2 glass-strong rounded-2xl p-4"
+    >
+      <ul class="flex flex-col gap-1">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                data-mobile-link
+                class="block px-3 py-2 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-white hover:bg-white/5 transition-colors"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="mt-2">
+          <a
+            href={`mailto:${personal.email}`}
+            class="btn-neon w-full justify-center"
+          >
+            <Icon name="mail" size={16} />
+            Contáctame
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById("site-header");
+  const onScroll = () => {
+    if (!header) return;
+    if (window.scrollY > 12) {
+      header.dataset.scrolled = "true";
+      header.classList.add("backdrop-blur-xl");
+    } else {
+      header.dataset.scrolled = "false";
+    }
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("mobile-menu");
+  toggle?.addEventListener("click", () => {
+    if (!menu) return;
+    const isOpen = !menu.classList.contains("hidden");
+    menu.classList.toggle("hidden");
+    toggle.setAttribute("aria-expanded", String(!isOpen));
+  });
+  document.querySelectorAll<HTMLAnchorElement>("[data-mobile-link]").forEach(
+    (a) => {
+      a.addEventListener("click", () => {
+        menu?.classList.add("hidden");
+        toggle?.setAttribute("aria-expanded", "false");
+      });
+    },
+  );
+</script>

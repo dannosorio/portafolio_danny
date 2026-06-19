@@ -1,0 +1,50 @@
+---
+interface Props {
+  id: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  align?: "left" | "center";
+  class?: string;
+}
+
+const {
+  id,
+  eyebrow,
+  title,
+  description,
+  align = "left",
+  class: className = "",
+} = Astro.props;
+
+const headerAlign =
+  align === "center" ? "items-center text-center" : "items-start text-left";
+---
+
+<section id={id} class={`section relative ${className}`}>
+  <div class="mx-auto max-w-6xl px-6 lg:px-8">
+    {
+      (eyebrow || title || description) && (
+        <header class={`reveal flex flex-col gap-4 ${headerAlign} mb-12`}>
+          {eyebrow && (
+            <span class="chip">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-neon-cyan)] shadow-[0_0_8px_var(--color-neon-cyan)]" />
+              {eyebrow}
+            </span>
+          )}
+          {title && (
+            <h2 class="font-[var(--font-display)] text-3xl md:text-5xl font-bold tracking-tight">
+              <span set:html={title} />
+            </h2>
+          )}
+          {description && (
+            <p class="max-w-2xl text-[var(--color-text-muted)] text-base md:text-lg leading-relaxed">
+              {description}
+            </p>
+          )}
+        </header>
+      )
+    }
+    <slot />
+  </div>
+</section>

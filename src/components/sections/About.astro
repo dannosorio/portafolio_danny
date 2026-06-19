@@ -1,0 +1,41 @@
+---
+import Section from "../ui/Section.astro";
+import { personal } from "../../data/personal";
+---
+
+<Section
+  id="about"
+  eyebrow="Sobre mí"
+  title={`Construyo <span class='neon-gradient'>productos digitales</span> de extremo a extremo`}
+  description="Mezclo diseño, ingeniería y rendimiento para crear experiencias web que la gente disfruta usar."
+>
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+    <div class="lg:col-span-3 flex flex-col gap-5 reveal">
+      {
+        personal.about.map((paragraph) => (
+          <p class="text-[var(--color-text-muted)] leading-relaxed text-base md:text-[1.05rem]">
+            {paragraph}
+          </p>
+        ))
+      }
+    </div>
+
+    <div class="lg:col-span-2 grid grid-cols-2 gap-4 reveal">
+      {
+        personal.highlights.map((h, idx) => (
+          <div
+            class="ring-card p-5 flex flex-col gap-1"
+            style={`animation-delay: ${idx * 80}ms`}
+          >
+            <span class="font-[var(--font-display)] text-3xl md:text-4xl font-bold neon-gradient">
+              {h.value}
+            </span>
+            <span class="text-xs uppercase tracking-wider text-[var(--color-text-subtle)]">
+              {h.label}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Section>

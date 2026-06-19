@@ -1,0 +1,51 @@
+---
+import { personal } from "../data/personal";
+import Icon from "./icons/Icon.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative mt-16 pb-10">
+  <div class="mx-auto max-w-6xl px-6 lg:px-8">
+    <div class="neon-divider mb-10"></div>
+
+    <div
+      class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between"
+    >
+      <div class="flex flex-col gap-2">
+        <p
+          class="font-[var(--font-display)] text-lg font-semibold neon-gradient"
+        >
+          {personal.shortName}.dev
+        </p>
+        <p class="text-sm text-[var(--color-text-muted)]">
+          © {year} {personal.name}. Diseñado y construido con cariño.
+        </p>
+      </div>
+
+      <ul class="flex items-center gap-2">
+        {
+          personal.socials.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target={s.href.startsWith("mailto:") ? undefined : "_blank"}
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border-strong)] text-[var(--color-text-muted)] hover:text-white hover:border-[var(--color-neon-cyan)] hover:shadow-[0_0_20px_rgba(34,211,238,0.35)] transition-all"
+              >
+                <Icon name={s.icon} size={18} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <p
+      class="mt-8 text-xs text-[var(--color-text-subtle)] font-[var(--font-mono)] text-center"
+    >
+      Built with Astro · Tailwind v4 · ♥
+    </p>
+  </div>
+</footer>

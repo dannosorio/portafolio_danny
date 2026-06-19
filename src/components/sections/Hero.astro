@@ -1,0 +1,138 @@
+---
+import { personal } from "../../data/personal";
+import NeonButton from "../ui/NeonButton.astro";
+import Icon from "../icons/Icon.astro";
+---
+
+<section id="top" class="relative pt-32 md:pt-40 pb-24 overflow-hidden">
+  <div class="mx-auto max-w-6xl px-6 lg:px-8">
+    <div class="flex flex-col items-start gap-8 max-w-4xl">
+      <div
+        class="reveal inline-flex items-center gap-2 chip"
+        style="--delay: 0ms"
+      >
+        <span class="relative flex h-2 w-2">
+          <span
+            class="absolute inline-flex h-full w-full rounded-full bg-[var(--color-neon-lime)] opacity-75 animate-ping"
+          ></span>
+          <span
+            class="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-neon-lime)] shadow-[0_0_8px_var(--color-neon-lime)]"
+          ></span>
+        </span>
+        {personal.availability}
+      </div>
+
+      <h1
+        class="reveal font-[var(--font-display)] text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight"
+      >
+        <span class="block text-white">Hola, soy</span>
+        <span class="block mt-2 neon-gradient-animated">
+          {personal.name}.
+        </span>
+      </h1>
+
+      <p
+        class="reveal text-lg md:text-2xl text-[var(--color-text-muted)] max-w-2xl leading-relaxed"
+      >
+        <span class="text-white font-medium">{personal.role}</span> ·
+        <span id="hero-tagline" class="cursor-blink">
+          {personal.taglines[0]}
+        </span>
+      </p>
+
+      <div class="reveal flex flex-wrap items-center gap-3 mt-2">
+        <NeonButton href="#projects" variant="cyan">
+          Ver proyectos
+          <Icon name="arrow-up-right" size={16} />
+        </NeonButton>
+        <NeonButton href="#contact" variant="ghost">
+          <Icon name="mail" size={16} />
+          Hablemos
+        </NeonButton>
+      </div>
+
+      <div
+        class="reveal mt-8 flex items-center gap-5 text-[var(--color-text-subtle)]"
+      >
+        {
+          personal.socials.map((s) => (
+            <a
+              href={s.href}
+              target={s.href.startsWith("mailto:") ? undefined : "_blank"}
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              class="hover:text-white transition-colors hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.65)]"
+            >
+              <Icon name={s.icon} size={20} />
+            </a>
+          ))
+        }
+        <span class="h-4 w-px bg-[var(--color-border-strong)]"></span>
+        <span class="font-[var(--font-mono)] text-xs">
+          {personal.location}
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[-6rem] top-24 h-[24rem] w-[24rem] rounded-full bg-[radial-gradient(circle,rgba(236,72,153,0.25),transparent_70%)] blur-2xl animate-float-slow"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute -left-32 bottom-0 h-[20rem] w-[20rem] rounded-full bg-[radial-gradient(circle,rgba(34,211,238,0.25),transparent_70%)] blur-2xl animate-float-slow"
+      style="animation-delay: -3s;"
+      aria-hidden="true"
+    >
+    </div>
+  </div>
+</section>
+
+<script
+  define:vars={{ taglines: personal.taglines }}
+>
+  const el = document.getElementById("hero-tagline");
+  if (el && Array.isArray(taglines) && taglines.length > 1) {
+    let i = 0;
+    let current = taglines[0];
+    let displayed = current;
+    let typing = false;
+
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    const run = async () => {
+      while (true) {
+        await sleep(3200);
+        if (document.hidden) {
+          await new Promise((r) => {
+            const onVis = () => {
+              if (!document.hidden) {
+                document.removeEventListener("visibilitychange", onVis);
+                r();
+              }
+            };
+            document.addEventListener("visibilitychange", onVis);
+          });
+        }
+        typing = true;
+        while (displayed.length > 0) {
+          displayed = displayed.slice(0, -1);
+          el.textContent = displayed;
+          await sleep(22);
+        }
+        i = (i + 1) % taglines.length;
+        current = taglines[i];
+        while (displayed.length < current.length) {
+          displayed = current.slice(0, displayed.length + 1);
+          el.textContent = displayed;
+          await sleep(34);
+        }
+        typing = false;
+      }
+    };
+
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      run();
+    }
+  }
+</script>

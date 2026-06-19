@@ -1,0 +1,70 @@
+---
+import Section from "../ui/Section.astro";
+import Chip from "../ui/Chip.astro";
+import { experience } from "../../data/experience";
+---
+
+<Section
+  id="experience"
+  eyebrow="Trayectoria"
+  title={`Mi <span class='neon-gradient'>experiencia</span> profesional`}
+  description="Algunos lugares donde he construido, liderado y aprendido."
+>
+  <ol class="relative border-l border-[var(--color-border-strong)] ml-3 md:ml-4">
+    {
+      experience.map((item, idx) => (
+        <li class="relative pl-8 md:pl-10 pb-12 last:pb-0 reveal">
+          <span
+            class="absolute -left-[7px] top-1.5 flex h-3.5 w-3.5 items-center justify-center"
+            aria-hidden="true"
+          >
+            <span class="absolute inline-flex h-full w-full rounded-full bg-[var(--color-neon-violet)] opacity-40 blur-[3px]" />
+            <span class="relative inline-flex h-3 w-3 rounded-full bg-[var(--color-neon-violet)] shadow-[0_0_12px_var(--color-neon-violet)] border border-[var(--color-bg)]" />
+          </span>
+
+          <article class="ring-card p-6 md:p-7 flex flex-col gap-4">
+            <header class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+              <div>
+                <h3 class="font-[var(--font-display)] text-lg md:text-xl font-semibold text-white">
+                  {item.role}
+                </h3>
+                <p class="text-sm text-[var(--color-text-muted)]">
+                  <span class="neon-text-cyan">{item.company}</span>
+                  <span class="text-[var(--color-text-subtle)]"> · </span>
+                  {item.location}
+                </p>
+              </div>
+              <span class="font-[var(--font-mono)] text-xs text-[var(--color-text-subtle)] whitespace-nowrap">
+                {item.period}
+              </span>
+            </header>
+
+            <p class="text-[var(--color-text-muted)] leading-relaxed text-sm md:text-base">
+              {item.description}
+            </p>
+
+            <ul class="flex flex-col gap-1.5 list-none">
+              {item.achievements.map((a) => (
+                <li class="flex gap-2 text-sm text-[var(--color-text-muted)]">
+                  <span
+                    class="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-neon-pink)] shadow-[0_0_6px_var(--color-neon-pink)]"
+                    aria-hidden="true"
+                  />
+                  <span>{a}</span>
+                </li>
+              ))}
+            </ul>
+
+            <ul class="flex flex-wrap gap-2 pt-2 border-t border-[var(--color-border)]">
+              {item.stack.map((s) => (
+                <li>
+                  <Chip label={s} />
+                </li>
+              ))}
+            </ul>
+          </article>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
